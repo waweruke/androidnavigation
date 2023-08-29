@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.navigationapp.ui.theme.pages.about.AboutScreen
 import com.example.navigationapp.ui.theme.pages.home.HomeScreen
 import com.example.navigationapp.ui.theme.pages.login.LoginScreen
+import com.example.navigationapp.ui.theme.pages.products.AddProductsScreen
 import com.example.navigationapp.ui.theme.pages.signup.SignupScreen
 
 @Composable
@@ -33,6 +34,12 @@ fun AppNavHost(
         }
         composable(ROUTE_ABOUT){
             AboutScreen(navController)
+        }
+        composable(ROUTE_ADD_PRODUCTS){
+            AddProductsScreen(navController)
+        }
+        composable(ROUTE_VIEW_PRODUCTS){
+
         }
     }
 }

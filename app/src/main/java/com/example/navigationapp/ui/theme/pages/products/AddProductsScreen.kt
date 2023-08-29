@@ -1,4 +1,4 @@
-package com.example.navigationapp.ui.theme.pages.signup
+package com.example.navigationapp.ui.theme.pages.products
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,65 +29,64 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.navigationapp.data.AuthRepository
+import com.example.navigationapp.data.ProductRepository
 import com.example.navigationapp.navigation.ROUTE_LOGIN
-import com.example.navigationapp.navigation.ROUTE_SIGNUP
 import com.example.navigationapp.ui.theme.NavigationAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignupScreen(navController:NavHostController) {
+fun AddProductsScreen(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         var context = LocalContext.current
         Text(
-            text = "Register here",
+            text = "Add product",
             color = Color.Red,
             fontSize = 30.sp,
             fontFamily = FontFamily.Cursive,
             textDecoration = TextDecoration.Underline,
             fontWeight = FontWeight.Bold)
 
-        var name by remember { mutableStateOf(TextFieldValue("")) }
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-        var password by remember { mutableStateOf(TextFieldValue("")) }
+        var productName by remember { mutableStateOf(TextFieldValue("")) }
+        var productQuality by remember { mutableStateOf(TextFieldValue("")) }
+        var productPrice by remember { mutableStateOf(TextFieldValue("")) }
 
         OutlinedTextField(
-            value = name,
-            onValueChange = {name = it},
-            label ={ Text(text = "Name *")},
+            value = productName,
+            onValueChange = {productName = it},
+            label ={ Text(text = "Name *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = {email = it},
-            label ={ Text(text = "Email *")},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            value = productQuality,
+            onValueChange = {productQuality = it},
+            label ={ Text(text = "Email *") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
-            value = password,
-            onValueChange = {password = it},
-            label ={ Text(text = "Password *")},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            value = productPrice,
+            onValueChange = {productPrice = it},
+            label ={ Text(text = "Password *") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(onClick = {
-            //------WRITE SIGNUP LOGIC HERE-----//
-            var authRepository = AuthRepository(navController,context)
-            authRepository.signup(name.text.trim(), email.text.trim(), password.text.trim())
+            //------WRITE SAVE LOGIC HERE-----//
+            var productRepository = ProductRepository(navController,context)
+            productRepository.saveProduct(productName.text.trim(),productQuality.text.trim(),productPrice.text.trim())
+
         }) {
-            Text(text = "Signup")
+            Text(text = "Save")
         }
 
-        Button(onClick = { navController.navigate(ROUTE_LOGIN) }) {
-            Text(text = "Have account? login")
-        }
+
 
 
     }
@@ -95,8 +94,8 @@ fun SignupScreen(navController:NavHostController) {
 
 @Preview
 @Composable
-fun SignupScreenPreview() {
+fun AddProductsScreenPreview() {
     NavigationAppTheme {
-        SignupScreen(rememberNavController())
+        AddProductsScreen(rememberNavController())
     }
 }
