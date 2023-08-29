@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.navigationapp.navigation.ROUTE_ADD_PRODUCTS
+import com.example.navigationapp.navigation.ROUTE_VIEW_PRODUCTS
 import com.example.navigationapp.ui.theme.NavigationAppTheme
 
 @Composable
@@ -22,7 +23,7 @@ fun HomeScreen(navController:NavHostController) {
         Button(onClick = { navController.navigate(ROUTE_ADD_PRODUCTS) }) {
             Text(text = "Add products")
         }
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { navController.navigate(ROUTE_VIEW_PRODUCTS) }) {
             Text(text = "View products")
         }
     }
