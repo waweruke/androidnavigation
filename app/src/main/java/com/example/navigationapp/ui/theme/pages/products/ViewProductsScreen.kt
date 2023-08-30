@@ -16,10 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.navigationapp.data.ProductRepository
+import com.example.navigationapp.navigation.ROUTE_UPDATE_PRODUCTS
+import com.example.navigationapp.ui.theme.NavigationAppTheme
 
 @Composable
 fun ViewProductsScreen(navController:NavHostController) {
@@ -46,7 +50,7 @@ fun ViewProductsScreen(navController:NavHostController) {
                     price = productPrice,
                     id = id,
                     productRepository = productRepository ,
-                    context = context
+                    navController = navController
                 )
             }
         }
@@ -54,7 +58,7 @@ fun ViewProductsScreen(navController:NavHostController) {
 }
 
 @Composable
-fun ProductItem(name:String, quantity:String, price:String, id:String, productRepository: ProductRepository, context: Context) {
+fun ProductItem(name:String, quantity:String, price:String, id:String, productRepository: ProductRepository, navController: NavHostController) {
     Column(modifier =  Modifier.fillMaxWidth()) {
         Text(text = name)
         Text(text = quantity)
@@ -64,8 +68,18 @@ fun ProductItem(name:String, quantity:String, price:String, id:String, productRe
         }) {
             Text(text = "Delete")
         }
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {
+            navController.navigate(ROUTE_UPDATE_PRODUCTS+"/$id")
+        }) {
             Text(text = "Update")
         }
+    }
+}
+
+@Preview
+@Composable
+fun viewProductsScreenPreview() {
+    NavigationAppTheme {
+        ViewProductsScreen(rememberNavController())
     }
 }

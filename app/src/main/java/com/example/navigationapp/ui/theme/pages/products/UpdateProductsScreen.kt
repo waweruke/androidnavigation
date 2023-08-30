@@ -1,5 +1,7 @@
 package com.example.navigationapp.ui.theme.pages.products
 
+
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,15 +32,37 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.navigationapp.data.AuthRepository
 import com.example.navigationapp.data.ProductRepository
+import com.example.navigationapp.models.Product
 import com.example.navigationapp.navigation.ROUTE_LOGIN
 import com.example.navigationapp.ui.theme.NavigationAppTheme
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddProductsScreen(navController: NavHostController) {
+fun UpdateProductsScreen(navController: NavHostController, id:String) {
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         var context = LocalContext.current
+        var name by remember { mutableStateOf("") }
+        var quantity by remember { mutableStateOf("") }
+        var price by remember { mutableStateOf("") }
+
+        var updateRef = FirebaseDatabase.getInstance().getReference().child("Products/$id")
+        updateRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var product = snapshot.getValue(Product::class.java)
+                name = product!!.name
+                quantity = product!!.quantity
+                price = product!!.price
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
         Text(
             text = "Add product",
             color = Color.Red,
@@ -47,9 +71,9 @@ fun AddProductsScreen(navController: NavHostController) {
             textDecoration = TextDecoration.Underline,
             fontWeight = FontWeight.Bold)
 
-        var productName by remember { mutableStateOf(TextFieldValue("")) }
-        var productQuality by remember { mutableStateOf(TextFieldValue("")) }
-        var productPrice by remember { mutableStateOf(TextFieldValue("")) }
+        var productName by remember { mutableStateOf(TextFieldValue(name)) }
+        var productQuality by remember { mutableStateOf(TextFieldValue(quantity)) }
+        var productPrice by remember { mutableStateOf(TextFieldValue(price)) }
 
         OutlinedTextField(
             value = productName,
@@ -78,9 +102,9 @@ fun AddProductsScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(onClick = {
-            //------WRITE SAVE LOGIC HERE-----//
+            //------WRITE UPDATE LOGIC HERE-----//
             var productRepository = ProductRepository(navController,context)
-            productRepository.saveProduct(productName.text.trim(),productQuality.text.trim(),productPrice.text.trim())
+            productRepository.updateProduct(productName.text.trim(),productQuality.text.trim(),productPrice.text.trim(),id)
 
         }) {
             Text(text = "Save")
@@ -94,8 +118,8 @@ fun AddProductsScreen(navController: NavHostController) {
 
 @Preview
 @Composable
-fun AddProductsScreenPreview() {
+fun UpdateProductsScreenPreview() {
     NavigationAppTheme {
-        AddProductsScreen(rememberNavController())
+        UpdateProductsScreen(rememberNavController(), id="")
     }
 }

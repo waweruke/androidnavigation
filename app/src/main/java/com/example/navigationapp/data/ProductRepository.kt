@@ -72,7 +72,20 @@ class ProductRepository(var navController:NavHostController, var context:Context
             }
         }
     }
-    fun updateProduct(){
-
+    fun updateProduct(name:String, quantity: String, price: String, id: String){
+var updateRef = FirebaseDatabase.getInstance().getReference().child("Products/$id")
+        var productData = Product(name, quantity, price, id)
+        progress.show()
+        updateRef.setValue(productData).addOnCompleteListener {
+            progress.dismiss()
+            if(it.isSuccessful){
+                Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,it.exception!!.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
+
+
 }

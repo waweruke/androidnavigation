@@ -13,6 +13,8 @@ import com.example.navigationapp.ui.theme.pages.about.AboutScreen
 import com.example.navigationapp.ui.theme.pages.home.HomeScreen
 import com.example.navigationapp.ui.theme.pages.login.LoginScreen
 import com.example.navigationapp.ui.theme.pages.products.AddProductsScreen
+import com.example.navigationapp.ui.theme.pages.products.UpdateProductsScreen
+import com.example.navigationapp.ui.theme.pages.products.ViewProductsScreen
 import com.example.navigationapp.ui.theme.pages.signup.SignupScreen
 
 @Composable
@@ -39,7 +41,10 @@ fun AppNavHost(
             AddProductsScreen(navController)
         }
         composable(ROUTE_VIEW_PRODUCTS){
-
+            ViewProductsScreen(navController)
+        }
+        composable(ROUTE_UPDATE_PRODUCTS){passedData->
+            UpdateProductsScreen(navController,passedData.arguments?.getString("id")!!)
         }
     }
 }
